@@ -1,91 +1,104 @@
-import 'package:flutter/material.dart';
 import 'package:design_task/modules/layout/tabs/character.dart';
+import 'package:flutter/material.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
-class CharacterCustomWidget extends StatefulWidget {
-  final String imgPath;
-  final String txt;
+class CharacterCustomWidget extends StatelessWidget {
   final int selectedIndex;
+  final String txt;
+  final List<String> imgPaths;
   final List<Color> color;
 
   CharacterCustomWidget({
     required this.selectedIndex,
     required this.txt,
+    required this.imgPaths,
     required this.color,
-    required this.imgPath,
-    super.key,
   });
 
   @override
-  State<CharacterCustomWidget> createState() => _CharacterCustomWidgetState();
-}
-
-class _CharacterCustomWidgetState extends State<CharacterCustomWidget> {
-  @override
   Widget build(BuildContext context) {
-    double h = MediaQuery.sizeOf(context).height;
-    double w = MediaQuery.sizeOf(context).width;
+    double height = MediaQuery.sizeOf(context).height;
+    double width = MediaQuery.sizeOf(context).width;
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return Stack(
+      clipBehavior: Clip.none,
+      alignment: Alignment.center,
       children: [
-        Stack(
-          clipBehavior: Clip.none,
-          alignment: Alignment.centerLeft,
-          children: [
-            Container(
-              height: h * 0.40,
-              width: w * 0.50,
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(72),
-                  topRight: Radius.circular(24),
-                  bottomLeft: Radius.circular(0),
-                  bottomRight: Radius.circular(80),
-                ),
-                gradient: LinearGradient(
-                  colors: widget.color,
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-              ),
+        Container(
+          height: height * 0.45,
+          width: width * 0.55,
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(72),
+              topRight: Radius.circular(24),
+              bottomLeft: Radius.circular(0),
+              bottomRight: Radius.circular(80),
             ),
-            Positioned(
-              bottom: 24,
-              top: -60,
-              child: Container(
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Character(
-                          index: widget.selectedIndex,
-                        ),
-                      ),
-                    );
-                  },
-                  child: Image.asset(
-                    widget.imgPath,
-                    height: h * 0.45,
-                    fit: BoxFit.cover,
+            gradient: LinearGradient(
+              colors: color,
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 12, bottom: 10),
+                child: Text(
+                  txt,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
-            ),
-            Positioned(
-                bottom: 10,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 12),
-                  child: Text.rich(TextSpan(
-                    style: const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                    text: widget.txt,
-                  )),
-                )),
-          ],
+              Expanded(
+                child: CarouselSlider(
+                  options: CarouselOptions(
+                    height: height * 0.5,
+                    viewportFraction: 0.6,
+                    enlargeCenterPage: true,
+                    enableInfiniteScroll: false,
+                    onPageChanged: (index, reason) {},
+                  ),
+                  items: imgPaths.map((imgPath) {
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Character(
+                              index: selectedIndex,
+                            ),
+                          ),
+                        );
+                      },
+                      child: Image.network(
+                        imgPath,
+                        fit: BoxFit.cover,
+                        height: height * 0.4,
+                        width: width * 0.55,
+                        loadingBuilder: (context, child, progress) {
+                          if (progress == null) {
+                            return child;
+                          } else {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          }
+                        },
+                        errorBuilder: (context, error, stackTrace) {
+                          return const Center(
+                              child: Icon(Icons.error, color: Colors.red));
+                        },
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ),
+            ],
+          ),
         ),
       ],
     );
