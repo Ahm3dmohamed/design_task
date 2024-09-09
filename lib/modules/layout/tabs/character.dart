@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:design_task/core/theme/apptheme.dart';
 import 'package:design_task/modules/widgets/abilities_icon.dart';
 import 'package:flutter/material.dart';
 
@@ -31,7 +30,6 @@ class _CharacterState extends State<Character> {
 
   @override
   Widget build(BuildContext context) {
-    ThemeData theme = Theme.of(context);
     return Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -48,20 +46,21 @@ class _CharacterState extends State<Character> {
         child: Scaffold(
           backgroundColor: Colors.transparent,
           appBar: AppBar(
+              leading: AppBar(
+                backgroundColor: Colors.transparent,
+                iconTheme: IconThemeData(color: Colors.white),
+              ),
               backgroundColor: Colors.transparent,
-              // leading: IconButton(
-              //     onPressed: () {},
-              //     icon: Icon(
-              //       Icons.arrow_back,
-              //       color: Colors.white,
-              //     )),
-              title: Text("${labels[widget.index]}",
-                  style: theme.textTheme.bodyMedium),
+              title: Text(
+                "${labels[widget.index]}",
+                style:
+                    TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+              ),
               centerTitle: true,
               actions: [
                 Image.asset(
                   "assets/img/displayicon1.png",
-                  scale: .8,
+                  scale: 1,
                   width: 44,
                   height: 89,
                 ),
@@ -72,18 +71,19 @@ class _CharacterState extends State<Character> {
           body: Column(
             children: [
               Stack(
+                clipBehavior: Clip.none,
                 alignment: Alignment.center,
                 children: [
                   Container(
-                      padding: EdgeInsets.only(top: 34, bottom: 28),
+                      padding: EdgeInsets.only(top: 0, bottom: 0),
                       child: Image.asset(
-                        "assets/img/background.png",
-                        width: 150,
-                        height: 250,
+                        "assets/img/chara_background.png",
+                        width: 300,
+                        height: 350,
                       )),
                   Positioned(
-                      bottom: -5,
-                      top: -44,
+                      bottom: 0,
+                      top: -55,
                       child: Container(
                           // height: 420,
                           // width: 300,
@@ -115,7 +115,7 @@ class _CharacterState extends State<Character> {
                         "Well-dressed and well-armed, French weapons designer Chamber expels aggressors with deadly precision. He leverages his custom arsenal to hold the line and pick off enemies from afar, with a contingency built for every plan.",
                         maxLines: 8,
                         // overflow: TextOverflow.ellipsis,
-                        style: TextStyle(fontSize: 18, color: Colors.white),
+                        style: TextStyle(fontSize: 16, color: Colors.white),
                       ),
                     ),
                   ],

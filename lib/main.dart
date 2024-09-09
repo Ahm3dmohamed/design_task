@@ -16,6 +16,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      // theme: ThemeData(fontFamily: "Valorant",
+
+      // ),
       debugShowCheckedModeBanner: false,
       home: HomeScreen(),
       initialRoute: SplashScreen.routeName,

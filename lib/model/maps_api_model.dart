@@ -9,25 +9,16 @@ class MapsModel {
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(Data.fromJson(v));
       });
     }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
-    }
-    return data;
   }
 }
 
 class Data {
   String? uuid;
   String? displayName;
-  Null? narrativeDescription;
+  String? narrativeDescription; // Changed from Null to String?
   String? tacticalDescription;
   String? coordinates;
   String? displayIcon;
@@ -78,41 +69,29 @@ class Data {
     premierBackgroundImage = json['premierBackgroundImage'];
     assetPath = json['assetPath'];
     mapUrl = json['mapUrl'];
-    xMultiplier = json['xMultiplier'];
-    yMultiplier = json['yMultiplier'];
-    xScalarToAdd = json['xScalarToAdd'];
-    yScalarToAdd = json['yScalarToAdd'];
+    xMultiplier = _parseDouble(json['xMultiplier']);
+    yMultiplier = _parseDouble(json['yMultiplier']);
+    xScalarToAdd = _parseDouble(json['xScalarToAdd']);
+    yScalarToAdd = _parseDouble(json['yScalarToAdd']);
     if (json['callouts'] != null) {
       callouts = <Callouts>[];
       json['callouts'].forEach((v) {
-        callouts!.add(new Callouts.fromJson(v));
+        callouts!.add(Callouts.fromJson(v));
       });
     }
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['uuid'] = this.uuid;
-    data['displayName'] = this.displayName;
-    data['narrativeDescription'] = this.narrativeDescription;
-    data['tacticalDescription'] = this.tacticalDescription;
-    data['coordinates'] = this.coordinates;
-    data['displayIcon'] = this.displayIcon;
-    data['listViewIcon'] = this.listViewIcon;
-    data['listViewIconTall'] = this.listViewIconTall;
-    data['splash'] = this.splash;
-    data['stylizedBackgroundImage'] = this.stylizedBackgroundImage;
-    data['premierBackgroundImage'] = this.premierBackgroundImage;
-    data['assetPath'] = this.assetPath;
-    data['mapUrl'] = this.mapUrl;
-    data['xMultiplier'] = this.xMultiplier;
-    data['yMultiplier'] = this.yMultiplier;
-    data['xScalarToAdd'] = this.xScalarToAdd;
-    data['yScalarToAdd'] = this.yScalarToAdd;
-    if (this.callouts != null) {
-      data['callouts'] = this.callouts!.map((v) => v.toJson()).toList();
+  double? _parseDouble(dynamic value) {
+    if (value == null) {
+      return null;
     }
-    return data;
+    if (value is double) {
+      return value;
+    }
+    if (value is int) {
+      return value.toDouble();
+    }
+    throw Exception("Invalid type for double conversion");
   }
 }
 
@@ -126,19 +105,8 @@ class Callouts {
   Callouts.fromJson(Map<String, dynamic> json) {
     regionName = json['regionName'];
     superRegionName = json['superRegionName'];
-    location = json['location'] != null
-        ? new Location.fromJson(json['location'])
-        : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['regionName'] = this.regionName;
-    data['superRegionName'] = this.superRegionName;
-    if (this.location != null) {
-      data['location'] = this.location!.toJson();
-    }
-    return data;
+    location =
+        json['location'] != null ? Location.fromJson(json['location']) : null;
   }
 }
 
@@ -149,14 +117,20 @@ class Location {
   Location({this.x, this.y});
 
   Location.fromJson(Map<String, dynamic> json) {
-    x = json['x'];
-    y = json['y'];
+    x = _parseDouble(json['x']);
+    y = _parseDouble(json['y']);
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['x'] = this.x;
-    data['y'] = this.y;
-    return data;
+  double? _parseDouble(dynamic value) {
+    if (value == null) {
+      return null;
+    }
+    if (value is double) {
+      return value;
+    }
+    if (value is int) {
+      return value.toDouble();
+    }
+    throw Exception("Invalid type for double conversion");
   }
 }

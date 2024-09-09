@@ -1,58 +1,52 @@
-import 'package:design_task/modules/widgets/character_custom_widget.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:design_task/model/agents_api_model.dart';
+import 'package:design_task/modules/manager/api_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:design_task/modules/widgets/character_custom_widget.dart';
 
 class AgentsTab extends StatelessWidget {
-  static const String routeName = "AgentsTab";
+  static String routeName = "AgentsTab";
+  final ApiManager apiManager = ApiManager();
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: ListView(
-        padding: const EdgeInsets.only(top: 88),
-        scrollDirection: Axis.horizontal,
-        children: [
-          CharacterCustomWidget(
-            selectedIndex: 0,
-            txt: "Fade",
-            imgPath: "assets/img/fade.png",
-            color: const [
-              Color(0xff66376C),
-              Color(0xffB1414C),
-            ],
-          ),
-          const SizedBox(width: 16),
-          CharacterCustomWidget(
-            selectedIndex: 1,
-            txt: "Gekko",
-            imgPath: "assets/img/gekko.png",
-            color: const [
-              Color(0xff3A7233),
-              Color(0xffC7F458),
-            ],
-          ),
-          const SizedBox(width: 16),
-          CharacterCustomWidget(
-            selectedIndex: 2,
-            txt: "Deadlock",
-            imgPath: "assets/img/deadlock.png",
-            color: const [
-              Color(0xffBCC2FF),
-              Color(0xff22224B),
-            ],
-          ),
-          const SizedBox(width: 16),
-          CharacterCustomWidget(
-            selectedIndex: 3,
-            txt: "Breach",
-            imgPath: "assets/img/kaya.png",
-            color: const [
-              Color(0xffFF9C33),
-              Color(0xff44412E),
-            ],
-          ),
-        ],
-      ),
+    return FutureBuilder<AgentsModel>(
+      future: apiManager.fetchAgents(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return const Center(child: Text('Error loading agents'));
+        } else if (!snapshot.hasData || snapshot.data == null) {
+          return const Center(child: Text('No data found'));
+        } else {
+          var agents = snapshot.data!.data!;
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: CarouselSlider(
+              options: CarouselOptions(
+                height: MediaQuery.of(context).size.height * 0.5,
+                viewportFraction: 0.6,
+                enlargeCenterPage: true,
+                enableInfiniteScroll: false,
+              ),
+              items: agents.map((agent) {
+                return CharacterCustomWidget(
+                  selectedIndex: agents.indexOf(agent),
+                  txt: agent.displayName ?? 'Unknown',
+                  imgPaths: [
+                    agent.fullPortrait ?? ''
+                  ], // Wrap single URL in a list
+                  color: [
+                    Color(0xff66376C),
+                    Color(0xffB1414C),
+                  ],
+                );
+              }).toList(),
+            ),
+          );
+        }
+      },
     );
   }
 }

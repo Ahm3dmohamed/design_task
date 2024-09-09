@@ -7,20 +7,10 @@ class WeaponModel {
   WeaponModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     if (json['data'] != null) {
-      data = <Data>[];
-      json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
-      });
+      data = (json['data'] as List)
+          .map((v) => Data.fromJson(v as Map<String, dynamic>))
+          .toList();
     }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
-    }
-    return data;
   }
 }
 
@@ -57,49 +47,26 @@ class Data {
     killStreamIcon = json['killStreamIcon'];
     assetPath = json['assetPath'];
     weaponStats = json['weaponStats'] != null
-        ? new WeaponStats.fromJson(json['weaponStats'])
+        ? WeaponStats.fromJson(json['weaponStats'])
         : null;
-    shopData = json['shopData'] != null
-        ? new ShopData.fromJson(json['shopData'])
-        : null;
+    shopData =
+        json['shopData'] != null ? ShopData.fromJson(json['shopData']) : null;
     if (json['skins'] != null) {
-      skins = <Skins>[];
-      json['skins'].forEach((v) {
-        skins!.add(new Skins.fromJson(v));
-      });
+      skins = (json['skins'] as List)
+          .map((v) => Skins.fromJson(v as Map<String, dynamic>))
+          .toList();
     }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['uuid'] = this.uuid;
-    data['displayName'] = this.displayName;
-    data['category'] = this.category;
-    data['defaultSkinUuid'] = this.defaultSkinUuid;
-    data['displayIcon'] = this.displayIcon;
-    data['killStreamIcon'] = this.killStreamIcon;
-    data['assetPath'] = this.assetPath;
-    if (this.weaponStats != null) {
-      data['weaponStats'] = this.weaponStats!.toJson();
-    }
-    if (this.shopData != null) {
-      data['shopData'] = this.shopData!.toJson();
-    }
-    if (this.skins != null) {
-      data['skins'] = this.skins!.map((v) => v.toJson()).toList();
-    }
-    return data;
   }
 }
 
 class WeaponStats {
-  double? fireRate;
-  int? magazineSize;
-  double? runSpeedMultiplier;
-  double? equipTimeSeconds;
-  double? reloadTimeSeconds;
-  double? firstBulletAccuracy;
-  int? shotgunPelletCount;
+  num? fireRate;
+  num? magazineSize;
+  num? runSpeedMultiplier;
+  num? equipTimeSeconds;
+  num? reloadTimeSeconds;
+  num? firstBulletAccuracy;
+  num? shotgunPelletCount;
   String? wallPenetration;
   String? feature;
   String? fireMode;
@@ -138,58 +105,28 @@ class WeaponStats {
     feature = json['feature'];
     fireMode = json['fireMode'];
     altFireType = json['altFireType'];
-    adsStats = json['adsStats'] != null
-        ? new AdsStats.fromJson(json['adsStats'])
-        : null;
+    adsStats =
+        json['adsStats'] != null ? AdsStats.fromJson(json['adsStats']) : null;
     altShotgunStats = json['altShotgunStats'] != null
-        ? new AltShotgunStats.fromJson(json['altShotgunStats'])
+        ? AltShotgunStats.fromJson(json['altShotgunStats'])
         : null;
     airBurstStats = json['airBurstStats'] != null
-        ? new AirBurstStats.fromJson(json['airBurstStats'])
+        ? AirBurstStats.fromJson(json['airBurstStats'])
         : null;
     if (json['damageRanges'] != null) {
-      damageRanges = <DamageRanges>[];
-      json['damageRanges'].forEach((v) {
-        damageRanges!.add(new DamageRanges.fromJson(v));
-      });
+      damageRanges = (json['damageRanges'] as List)
+          .map((v) => DamageRanges.fromJson(v as Map<String, dynamic>))
+          .toList();
     }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['fireRate'] = this.fireRate;
-    data['magazineSize'] = this.magazineSize;
-    data['runSpeedMultiplier'] = this.runSpeedMultiplier;
-    data['equipTimeSeconds'] = this.equipTimeSeconds;
-    data['reloadTimeSeconds'] = this.reloadTimeSeconds;
-    data['firstBulletAccuracy'] = this.firstBulletAccuracy;
-    data['shotgunPelletCount'] = this.shotgunPelletCount;
-    data['wallPenetration'] = this.wallPenetration;
-    data['feature'] = this.feature;
-    data['fireMode'] = this.fireMode;
-    data['altFireType'] = this.altFireType;
-    if (this.adsStats != null) {
-      data['adsStats'] = this.adsStats!.toJson();
-    }
-    if (this.altShotgunStats != null) {
-      data['altShotgunStats'] = this.altShotgunStats!.toJson();
-    }
-    if (this.airBurstStats != null) {
-      data['airBurstStats'] = this.airBurstStats!.toJson();
-    }
-    if (this.damageRanges != null) {
-      data['damageRanges'] = this.damageRanges!.map((v) => v.toJson()).toList();
-    }
-    return data;
   }
 }
 
 class AdsStats {
-  double? zoomMultiplier;
-  double? fireRate;
-  double? runSpeedMultiplier;
-  int? burstCount;
-  double? firstBulletAccuracy;
+  num? zoomMultiplier;
+  num? fireRate;
+  num? runSpeedMultiplier;
+  num? burstCount;
+  num? firstBulletAccuracy;
 
   AdsStats(
       {this.zoomMultiplier,
@@ -205,21 +142,11 @@ class AdsStats {
     burstCount = json['burstCount'];
     firstBulletAccuracy = json['firstBulletAccuracy'];
   }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['zoomMultiplier'] = this.zoomMultiplier;
-    data['fireRate'] = this.fireRate;
-    data['runSpeedMultiplier'] = this.runSpeedMultiplier;
-    data['burstCount'] = this.burstCount;
-    data['firstBulletAccuracy'] = this.firstBulletAccuracy;
-    return data;
-  }
 }
 
 class AltShotgunStats {
-  int? shotgunPelletCount;
-  double? burstRate;
+  num? shotgunPelletCount;
+  num? burstRate;
 
   AltShotgunStats({this.shotgunPelletCount, this.burstRate});
 
@@ -227,18 +154,11 @@ class AltShotgunStats {
     shotgunPelletCount = json['shotgunPelletCount'];
     burstRate = json['burstRate'];
   }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['shotgunPelletCount'] = this.shotgunPelletCount;
-    data['burstRate'] = this.burstRate;
-    return data;
-  }
 }
 
 class AirBurstStats {
-  int? shotgunPelletCount;
-  double? burstDistance;
+  num? shotgunPelletCount;
+  num? burstDistance;
 
   AirBurstStats({this.shotgunPelletCount, this.burstDistance});
 
@@ -246,21 +166,14 @@ class AirBurstStats {
     shotgunPelletCount = json['shotgunPelletCount'];
     burstDistance = json['burstDistance'];
   }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['shotgunPelletCount'] = this.shotgunPelletCount;
-    data['burstDistance'] = this.burstDistance;
-    return data;
-  }
 }
 
 class DamageRanges {
-  int? rangeStartMeters;
-  int? rangeEndMeters;
-  double? headDamage;
-  int? bodyDamage;
-  double? legDamage;
+  num? rangeStartMeters;
+  num? rangeEndMeters;
+  num? headDamage;
+  num? bodyDamage;
+  num? legDamage;
 
   DamageRanges(
       {this.rangeStartMeters,
@@ -276,28 +189,18 @@ class DamageRanges {
     bodyDamage = json['bodyDamage'];
     legDamage = json['legDamage'];
   }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['rangeStartMeters'] = this.rangeStartMeters;
-    data['rangeEndMeters'] = this.rangeEndMeters;
-    data['headDamage'] = this.headDamage;
-    data['bodyDamage'] = this.bodyDamage;
-    data['legDamage'] = this.legDamage;
-    return data;
-  }
 }
 
 class ShopData {
-  int? cost;
+  num? cost;
   String? category;
-  int? shopOrderPriority;
+  num? shopOrderPriority;
   String? categoryText;
   GridPosition? gridPosition;
   bool? canBeTrashed;
-  Null? image;
+  String? image;
   String? newImage;
-  Null? newImage2;
+  String? newImage2;
   String? assetPath;
 
   ShopData(
@@ -318,7 +221,7 @@ class ShopData {
     shopOrderPriority = json['shopOrderPriority'];
     categoryText = json['categoryText'];
     gridPosition = json['gridPosition'] != null
-        ? new GridPosition.fromJson(json['gridPosition'])
+        ? GridPosition.fromJson(json['gridPosition'])
         : null;
     canBeTrashed = json['canBeTrashed'];
     image = json['image'];
@@ -326,41 +229,17 @@ class ShopData {
     newImage2 = json['newImage2'];
     assetPath = json['assetPath'];
   }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['cost'] = this.cost;
-    data['category'] = this.category;
-    data['shopOrderPriority'] = this.shopOrderPriority;
-    data['categoryText'] = this.categoryText;
-    if (this.gridPosition != null) {
-      data['gridPosition'] = this.gridPosition!.toJson();
-    }
-    data['canBeTrashed'] = this.canBeTrashed;
-    data['image'] = this.image;
-    data['newImage'] = this.newImage;
-    data['newImage2'] = this.newImage2;
-    data['assetPath'] = this.assetPath;
-    return data;
-  }
 }
 
 class GridPosition {
-  int? row;
-  int? column;
+  num? row;
+  num? column;
 
   GridPosition({this.row, this.column});
 
   GridPosition.fromJson(Map<String, dynamic> json) {
     row = json['row'];
     column = json['column'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['row'] = this.row;
-    data['column'] = this.column;
-    return data;
   }
 }
 
@@ -395,35 +274,15 @@ class Skins {
     wallpaper = json['wallpaper'];
     assetPath = json['assetPath'];
     if (json['chromas'] != null) {
-      chromas = <Chromas>[];
-      json['chromas'].forEach((v) {
-        chromas!.add(new Chromas.fromJson(v));
-      });
+      chromas = (json['chromas'] as List)
+          .map((v) => Chromas.fromJson(v as Map<String, dynamic>))
+          .toList();
     }
     if (json['levels'] != null) {
-      levels = <Levels>[];
-      json['levels'].forEach((v) {
-        levels!.add(new Levels.fromJson(v));
-      });
+      levels = (json['levels'] as List)
+          .map((v) => Levels.fromJson(v as Map<String, dynamic>))
+          .toList();
     }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['uuid'] = this.uuid;
-    data['displayName'] = this.displayName;
-    data['themeUuid'] = this.themeUuid;
-    data['contentTierUuid'] = this.contentTierUuid;
-    data['displayIcon'] = this.displayIcon;
-    data['wallpaper'] = this.wallpaper;
-    data['assetPath'] = this.assetPath;
-    if (this.chromas != null) {
-      data['chromas'] = this.chromas!.map((v) => v.toJson()).toList();
-    }
-    if (this.levels != null) {
-      data['levels'] = this.levels!.map((v) => v.toJson()).toList();
-    }
-    return data;
   }
 }
 
@@ -454,18 +313,6 @@ class Chromas {
     streamedVideo = json['streamedVideo'];
     assetPath = json['assetPath'];
   }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['uuid'] = this.uuid;
-    data['displayName'] = this.displayName;
-    data['displayIcon'] = this.displayIcon;
-    data['fullRender'] = this.fullRender;
-    data['swatch'] = this.swatch;
-    data['streamedVideo'] = this.streamedVideo;
-    data['assetPath'] = this.assetPath;
-    return data;
-  }
 }
 
 class Levels {
@@ -491,16 +338,5 @@ class Levels {
     displayIcon = json['displayIcon'];
     streamedVideo = json['streamedVideo'];
     assetPath = json['assetPath'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['uuid'] = this.uuid;
-    data['displayName'] = this.displayName;
-    data['levelItem'] = this.levelItem;
-    data['displayIcon'] = this.displayIcon;
-    data['streamedVideo'] = this.streamedVideo;
-    data['assetPath'] = this.assetPath;
-    return data;
   }
 }

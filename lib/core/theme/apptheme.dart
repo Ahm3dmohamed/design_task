@@ -2,18 +2,19 @@ import 'package:flutter/material.dart';
 
 class Apptheme {
   ThemeData myTheme = ThemeData(
-    fontFamily: "font",
-    textTheme: TextTheme(
+    fontFamily: "Valorant",
+    textTheme: const TextTheme(
         bodyMedium: TextStyle(
             fontSize: 24,
             color: Colors.white,
-            fontFamily: "font",
+            fontFamily: "Valorant",
             fontStyle: FontStyle.italic)),
-    appBarTheme: AppBarTheme(
+    appBarTheme: const AppBarTheme(
+        centerTitle: true,
         titleTextStyle: TextStyle(
             fontSize: 24,
             color: Colors.white,
-            fontFamily: "font",
+            fontFamily: "Valorant",
             fontStyle: FontStyle.italic)),
   );
 }
