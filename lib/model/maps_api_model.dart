@@ -18,7 +18,7 @@ class MapsModel {
 class Data {
   String? uuid;
   String? displayName;
-  String? narrativeDescription; // Changed from Null to String?
+  String? narrativeDescription;
   String? tacticalDescription;
   String? coordinates;
   String? displayIcon;

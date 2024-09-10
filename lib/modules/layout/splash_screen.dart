@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:animate_do/animate_do.dart';
 import 'package:design_task/modules/layout/tabs/home_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +18,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Timer(
-      Duration(seconds: 5),
+      Duration(seconds: 2),
       () {
         Navigator.pushNamedAndRemoveUntil(
           context,
@@ -30,9 +31,11 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Image.asset(
-      "assets/img/splash_screen.png",
-      fit: BoxFit.cover,
+    return ZoomIn(
+      child: Image.asset(
+        "assets/img/splash_screen.png",
+        fit: BoxFit.cover,
+      ),
     );
   }
 }

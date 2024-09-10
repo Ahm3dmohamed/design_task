@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:design_task/model/weapons_api_model.dart';
 import 'package:design_task/modules/manager/api_manager.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 class WeaponWidget extends StatelessWidget {
   static const String routeName = "WeaponWidget";
@@ -13,16 +12,7 @@ class WeaponWidget extends StatelessWidget {
       future: apiManager.fetchWeapons(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Skeleton.unite(
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.ac_unit, size: 32),
-                SizedBox(width: 8),
-                Icon(Icons.access_alarm, size: 32),
-              ],
-            ),
-          );
+          return CircularProgressIndicator();
         } else if (snapshot.hasError) {
           return const Center(child: Text('Error loading weapons'));
         } else if (!snapshot.hasData || snapshot.data == null) {
@@ -32,28 +22,78 @@ class WeaponWidget extends StatelessWidget {
           return ListView.builder(
             itemCount: weapons.length,
             itemBuilder: (context, index) {
-              return ListTile(
-                leading: weapons[index].displayIcon != null
-                    ? Image.network(
-                        weapons[index].displayIcon!,
-                        loadingBuilder: (context, child, loadingProgress) {
-                          if (loadingProgress == null) return child;
-                          return Center(
-                            child: CircularProgressIndicator(
-                              value: loadingProgress.expectedTotalBytes != null
-                                  ? loadingProgress.cumulativeBytesLoaded /
-                                      (loadingProgress.expectedTotalBytes ?? 1)
-                                  : null,
+              final angel = index % 2 == 0 ? 5 / 12 : -5 / 12;
+
+              return Container(
+                height: 190,
+                child: Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    Positioned.fill(
+                      child: Card(
+                        margin: const EdgeInsets.only(
+                            left: 12, right: 12, top: 24, bottom: 24),
+                        color: const Color(0xff081E34),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 5,
+                      right: 5,
+                      left: 5,
+                      top: 0,
+                      child: Transform.rotate(
+                        angle: angel,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(16),
+                          child: weapons[index].displayIcon != null
+                              ? Image.network(
+                                  weapons[index].displayIcon!,
+                                  fit: BoxFit.contain,
+                                  loadingBuilder:
+                                      (context, child, loadingProgress) {
+                                    if (loadingProgress == null) return child;
+                                    return const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  },
+                                  errorBuilder: (context, error, stackTrace) =>
+                                      const Icon(Icons.error),
+                                )
+                              : const Icon(Icons.image_not_supported),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 20,
+                      left: 30,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            weapons[index].displayName ?? 'Unknown Weapon',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
                             ),
-                          );
-                        },
-                        errorBuilder: (context, error, stackTrace) =>
-                            Icon(Icons.error),
-                      )
-                    : null,
-                title: Text(
-                  weapons[index].displayName ?? 'Unknown Weapon',
-                  style: const TextStyle(color: Colors.white),
+                          ),
+                          SizedBox(
+                            height: 24,
+                          ),
+                          // Text(
+                          //   weapons[index].category ?? 'Unknown Category',
+                          //   style: const TextStyle(
+                          //     color: Colors.white70,
+                          //     fontSize: 16,
+                          //   ),
+                          // ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               );
             },

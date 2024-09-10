@@ -23,10 +23,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: const Color.fromARGB(255, 29, 27, 27),
+        backgroundColor: const Color(0xff06111C),
         appBar: AppBar(
-          title: const Text('Valorant Data'),
-          backgroundColor: const Color.fromARGB(255, 29, 27, 27),
+          backgroundColor: const Color(0xff06111C),
         ),
         body: Column(
           children: [
@@ -61,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       },
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
           color: _currentIndex == index ? Colors.red : Colors.transparent,
