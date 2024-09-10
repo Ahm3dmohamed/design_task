@@ -1,6 +1,7 @@
 import 'package:design_task/modules/layout/tabs/character.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class CharacterCustomWidget extends StatelessWidget {
   final int selectedIndex;
@@ -43,58 +44,68 @@ class CharacterCustomWidget extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 12, bottom: 10),
-                child: Text(
-                  txt,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
               Expanded(
                 child: CarouselSlider(
                   options: CarouselOptions(
                     height: height * 0.5,
-                    viewportFraction: 0.6,
+                    viewportFraction: 0.9,
                     enlargeCenterPage: true,
                     enableInfiniteScroll: false,
-                    onPageChanged: (index, reason) {},
                   ),
-                  items: imgPaths.map((imgPath) {
+                  items: imgPaths.asMap().entries.map((entry) {
+                    int index = entry.key;
+                    String imgPath = entry.value;
+
                     return GestureDetector(
                       onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => Character(
-                              index: selectedIndex,
+                              txt: txt,
+                              imgPaths: imgPaths,
+                              index: index,
                             ),
                           ),
                         );
                       },
-                      child: Image.network(
-                        imgPath,
-                        fit: BoxFit.cover,
-                        height: height * 0.4,
-                        width: width * 0.55,
-                        loadingBuilder: (context, child, progress) {
-                          if (progress == null) {
-                            return child;
-                          } else {
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          }
-                        },
-                        errorBuilder: (context, error, stackTrace) {
-                          return const Center(
-                              child: Icon(Icons.error, color: Colors.red));
-                        },
+                      child: Stack(
+                        clipBehavior: Clip.none,
+                        alignment: Alignment.center,
+                        children: [
+                          Positioned(
+                            top: -85,
+                            bottom: 12,
+                            child: Image.network(
+                              imgPath,
+                              fit: BoxFit.cover,
+                              height: height,
+                              width: width * 0.6,
+                              loadingBuilder: (context, child, progress) {
+                                if (progress == null) {
+                                  return child;
+                                } else {
+                                  return Skeletonizer(child: child);
+                                }
+                              },
+                            ),
+                          ),
+                        ],
                       ),
                     );
                   }).toList(),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 80, bottom: 4),
+                child: Text(
+                  txt,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 18.0,
+                    fontFamily: "Valorant",
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ],

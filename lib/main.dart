@@ -16,9 +16,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      // theme: ThemeData(fontFamily: "Valorant",
-
-      // ),
+      theme: ThemeData(
+        fontFamily: "Valorant",
+      ),
       debugShowCheckedModeBanner: false,
       home: HomeScreen(),
       initialRoute: SplashScreen.routeName,
@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
         HomeScreen.routeName: (_) => HomeScreen(),
         WeaponWidget.routeName: (_) => WeaponWidget(),
         MapWidget.routeName: (_) => MapWidget(),
-        AgentsTab.routeName: (_) => AgentsTab(),
+        // AgentsTab.routeName: (_) => AgentsTab(),
       },
     );
   }

@@ -37,7 +37,7 @@ class Data {
   Role? role;
   RecruitmentData? recruitmentData;
   List<Abilities>? abilities;
-  dynamic voiceLine; // Changed to dynamic for flexible handling
+  dynamic voiceLine;
 
   Data(
       {this.uuid,

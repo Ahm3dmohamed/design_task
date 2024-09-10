@@ -3,9 +3,11 @@ import 'package:design_task/model/agents_api_model.dart';
 import 'package:design_task/modules/manager/api_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:design_task/modules/widgets/character_custom_widget.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class AgentsTab extends StatelessWidget {
   static String routeName = "AgentsTab";
+
   final ApiManager apiManager = ApiManager();
 
   @override
@@ -14,7 +16,7 @@ class AgentsTab extends StatelessWidget {
       future: apiManager.fetchAgents(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
+          return const Skeletonizer(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           return const Center(child: Text('Error loading agents'));
         } else if (!snapshot.hasData || snapshot.data == null) {
@@ -29,19 +31,17 @@ class AgentsTab extends StatelessWidget {
                 viewportFraction: 0.6,
                 enlargeCenterPage: true,
                 enableInfiniteScroll: false,
+                autoPlay: true,
               ),
               items: agents.map((agent) {
                 return CharacterCustomWidget(
-                  selectedIndex: agents.indexOf(agent),
-                  txt: agent.displayName ?? 'Unknown',
-                  imgPaths: [
-                    agent.fullPortrait ?? ''
-                  ], // Wrap single URL in a list
-                  color: [
-                    Color(0xff66376C),
-                    Color(0xffB1414C),
-                  ],
-                );
+                    selectedIndex: agents.indexOf(agent),
+                    txt: agent.displayName ?? 'Unknown',
+                    imgPaths: [agent.fullPortrait ?? ''],
+                    color: agent.backgroundGradientColors
+                            ?.map((color) => Color(int.parse('0xff$color')))
+                            .toList() ??
+                        [Colors.black, Colors.black]);
               }).toList(),
             ),
           );

@@ -13,7 +13,7 @@ class MapWidget extends StatelessWidget {
       future: apiManager.fetchMaps(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
+          return CircularProgressIndicator();
         } else if (snapshot.hasError) {
           return const Center(child: Text('Error loading maps'));
         } else if (!snapshot.hasData || snapshot.data == null) {
@@ -21,18 +21,47 @@ class MapWidget extends StatelessWidget {
         } else {
           var maps = snapshot.data!.data!;
           return Skeletonizer(
-            enabled: snapshot.connectionState == ConnectionState.waiting,
             child: ListView.builder(
               itemCount: maps.length,
               itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(
-                    maps[index].displayName ?? 'Unknown',
-                    style: const TextStyle(color: Colors.white),
+                return Card(
+                  margin: const EdgeInsets.all(12),
+                  clipBehavior: Clip.hardEdge,
+                  child: Stack(
+                    children: [
+                      Image.network(
+                          height: 224,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                          maps[index].listViewIcon ?? "Error "),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          top: 9,
+                          left: 9,
+                        ),
+                        child: Text(
+                          maps[index].displayName ?? 'Unknown',
+                          style: const TextStyle(
+                              fontSize: 30, color: Colors.white),
+                        ),
+                      ),
+                      Positioned(
+                        top: -5,
+                        right: -5,
+                        bottom: -5,
+                        child: maps[index].displayIcon != null
+                            ? Image.network(
+                                maps[index].displayIcon!,
+                                height: 130,
+                                width: 200,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Icon(Icons.error);
+                                },
+                              )
+                            : Icon(Icons.map),
+                      ),
+                    ],
                   ),
-                  leading: maps[index].displayIcon != null
-                      ? Image.network(maps[index].displayIcon!)
-                      : null,
                 );
               },
             ),
